@@ -92,7 +92,7 @@ TMPDIR = "${TOPDIR}/tmp"
 # Ultimately when creating custom policy, people will likely end up subclassing 
 # these defaults.
 #
-#DISTRO ?= "poky"
+DISTRO   = "arago"
 # As an example of a subclass there is a "bleeding" edge policy configuration
 # where many versions are set to the absolute latest code from the upstream 
 # source control systems. This is just mentioned here as an example, its not
@@ -114,13 +114,13 @@ TMPDIR = "${TOPDIR}/tmp"
 PACKAGE_CLASSES ?= "package_deb"
 
 #
-# SDK target architecture
+# SDK/ADT target architecture
 #
-# This variable specifies the architecture to build SDK items for and means
-# you can build the SDK packages for architectures other than the machine you are
-# running the build on (i.e. building i686 packages on an x86_64 host).
+# This variable specified the architecture to build SDK/ADT items for and means
+# you can build the SDK packages for architectures other than the machine you are 
+# running the build on (i.e. building i686 packages on an x86_64 host._
 # Supported values are i686 and x86_64
-#SDKMACHINE ?= "i686"
+SDKMACHINE ?= "x86_64"
 
 #
 # Extra image configuration defaults
@@ -245,13 +245,24 @@ CONF_VERSION = "1"
 # 
 # Misc.
 #
+# Set branding policy for Processor SDK
+ARAGO_BRAND ?= "processor-sdk"
+
+# Set terminal types by default it expects gnome-terminal
+# but we chose xterm
+TERMCMD = "${XTERM_TERMCMD}"
+TERMCMDRUN = "${XTERM_TERMCMDRUN}"
+
+# Don't generate the mirror tarball for SCM repos, the snapshot is enough
+BB_GENERATE_MIRROR_TARBALLS = "0"
+
+# Uncomment this to remove work directory after packaging to save disk space
+INHERIT += "rm_work"
+
+# Keep one set of images by default
+RM_OLD_IMAGE = "1"
+
 INHERIT += "extrausers"
 EXTRA_USERS_PARAMS = "usermod -P mcb am33; "
-PATCHRESOLVE = "noop"
-RM_OLD_IMAGE = "1"
-INHERIT += "rm_work"
-DISTRO_FEATURES = "ext2 pam opengl usbhost ${DISTRO_FEATURES_LIBC}"
-DISTRO_FEATURES_BACKFILL_CONSIDERED += "pulseaudio"
-VIRTUAL-RUNTIME_init_manager = "sysvinit"
-MACHINE_FEATURES_remove = "apm"
+
 IMAGE_INSTALL_append += " apt"
